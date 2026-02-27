@@ -9,22 +9,7 @@
 - Проверяет доступность через загрузку ресурса как `<img>` (favicon / apple-touch-icon), без использования `fetch` (из‑за CORS/opaque responses).
 - Опционально отображает колонку **RKN** по локальному снапшоту `data/rkn_snapshot.json`, если файл есть в репозитории.
 
-## Развёртывание на GitHub Pages
-
-1. Создайте репозиторий на GitHub (или используйте существующий).
-2. Склонируйте и загрузите файлы проекта:
-   ```bash
-   git clone https://github.com/YOUR_USER/check_sites.git
-   cd check_sites
-   # Скопируйте сюда index.html, styles.css, app.js, папку data/, .github/
-   git add .
-   git commit -m "Initial: diagnostic site"
-   git push
-   ```
-3. В настройках репозитория: **Settings → Pages** → Source: **Deploy from a branch** → Branch: `main` (или `master`) → папка **/ (root)** → Save.
-4. Сайт будет доступен по адресу: `https://YOUR_USER.github.io/check_sites/` (если репозиторий называется `check_sites`).
-
-Для проектной страницы (репо `USER.github.io`) корень сайта — корень репо, тогда пути к `data/default_domains.txt` и `data/rkn_snapshot.json` должны быть именно `data/...`.
+https://Vasiliy566.github.io/check-allowed/
 
 ## Структура проекта
 
