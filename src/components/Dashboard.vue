@@ -3,6 +3,7 @@ import {
   diagnostics,
   runStats,
   isRunning,
+  isCancelled,
   startRun,
   stopRun,
   retryFailed,
@@ -64,7 +65,7 @@ function doExport() {
         @click="startRun"
         class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
       >
-        Start
+        {{ isCancelled ? 'Retry' : 'Start' }}
       </button>
       <button
         v-if="isRunning"
@@ -74,7 +75,7 @@ function doExport() {
         Stop
       </button>
       <button
-        v-if="!isRunning && failedDomains.length > 0"
+        v-if="!isRunning && failedDomains.length > 0 && !isCancelled"
         @click="retryFailed"
         class="rounded-lg border border-zinc-600 bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700"
       >
