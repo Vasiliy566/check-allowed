@@ -281,7 +281,11 @@
       const rawOk = controls[2] && controls[2].ok;
 
       if (!exampleOk) {
-        setBadge('fail', '❌', 'Похоже, нет интернета или сломался DNS', 'Контрольный example.com недоступен.');
+        var detail = 'Контрольный example.com недоступен. ';
+        if (window.location.hostname.indexOf('github.io') !== -1) {
+          detail += 'На GitHub Pages загрузка внешних изображений может блокироваться. Разверните сайт на Netlify/Cloudflare Pages или откройте index.html локально (например: python3 -m http.server 8080).';
+        }
+        setBadge('fail', '❌', 'Похоже, нет интернета или сломался DNS', detail);
         el.btnRun.disabled = false;
         el.btnStop.disabled = true;
         el.progressWrap.hidden = true;
