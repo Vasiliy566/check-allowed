@@ -1,0 +1,33 @@
+# Fallback list when GitHub lists are unavailable
+# One domain per line; # and // are comments
+
+lemanapro.ru
+wikipedia.org
+google.com
+youtube.com
+github.com
+raw.githubusercontent.com
+cloudflare.com
+discord.com
+telegram.org
+twitter.com
+facebook.com
+instagram.com
+vk.com
+ya.ru
+yandex.ru
+mail.ru
+ok.ru
+tiktok.com
+twitch.tv
+reddit.com
+amazon.com
+microsoft.com
+apple.com
+netflix.com
+spotify.com
+zoom.us
+slack.com
+medium.com
+stackoverflow.com
+wikipedia.org

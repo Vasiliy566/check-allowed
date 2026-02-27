@@ -1,0 +1,16 @@
+# Generally accessible / neutral domains (allowed from most locations)
+# Used for "allowed" category when checking all types
+
+lemanapro.ru
+wikipedia.org
+google.com
+github.com
+cloudflare.com
+microsoft.com
+apple.com
+amazon.com
+stackoverflow.com
+reddit.com
+medium.com
+bbc.com
+reuters.com
