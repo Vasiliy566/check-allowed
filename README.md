@@ -54,7 +54,9 @@ npm run build
 3. В ветке для публикации (например, `gh-pages`) в корне должны лежать файлы из каталога `dist/` (то есть `index.html`, папка `assets/`, при необходимости `default_domains.txt`, `rkn_snapshot.json` и т.д.).
 4. Укажите эту ветку и папку `/ (root)` (или каталог, куда вы положили содержимое `dist/`), сохраните. Через некоторое время сайт будет доступен по адресу вида `https://<username>.github.io/<repo>/` (или по корню, если репозиторий называется `<username>.github.io`).
 
-**Вариант 2: GitHub Actions**
+**Вариант 2: GitHub Actions (рекомендуется)**
+
+**Важно:** в **Settings → Pages → Source** обязательно выберите **GitHub Actions**, а не «Deploy from a branch». Если оставить публикацию из ветки, браузер будет запрашивать `/src/main.ts` (исходник) и получит 404 — сайт не заработает.
 
 1. В корне репозитория создайте каталог `.github/workflows`.
 2. Добавьте файл `.github/workflows/deploy-pages.yml`:
@@ -85,7 +87,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - run: npm run build
+      - run: npx vite build --base=/${{ github.event.repository.name }}/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -105,6 +107,8 @@ jobs:
 4. При каждом пуше в ветку `main` будет выполняться сборка и деплой; сайт появится по адресу `https://<username>.github.io/<repo>/`.
 
 Файлы из `public/` (в том числе `default_domains.txt`, `rkn_snapshot.json`) при сборке копируются в `dist/` и будут доступны на GitHub Pages.
+
+**Если страница пустая и в F12 видно, что загружается `main.ts` (исходный код):** значит GitHub отдаёт исходники из ветки, а не собранный сайт. Зайдите в репозитории в **Settings → Pages**. В блоке **Build and deployment** в поле **Source** выберите **GitHub Actions** (не «Deploy from a branch»). Сохраните. Дождитесь завершения workflow вкладки **Actions** и обновите страницу сайта (лучше с очисткой кэша: Ctrl+Shift+R). После этого должен отдаваться артефакт сборки (в Network будет запрос к файлу вида `assets/index-….js`, а не к `main.ts`).
 
 ## Источники доменов
 

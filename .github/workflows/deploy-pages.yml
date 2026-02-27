@@ -25,6 +25,15 @@ jobs:
       - run: npm ci
       - run: npx vue-tsc -b
       - run: npx vite build --base=/${{ github.event.repository.name }}/
+      - name: Verify built index uses assets (not main.ts)
+        run: |
+          if grep -q 'main\.ts' dist/index.html; then
+            echo "ERROR: dist/index.html still references main.ts - build base may be wrong"
+            cat dist/index.html
+            exit 1
+          fi
+          echo "Built index.html script tag:"
+          grep -o '<script[^>]*src="[^"]*"[^>]*>' dist/index.html || true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
