@@ -1,0 +1,1 @@
+{"root":["./src/diagnostics.ts","./src/domainsources.ts","./src/env.d.ts","./src/main.ts","./src/probes.ts","./src/runner.ts","./src/store.ts","./src/types.ts","./src/app.vue","./src/components/categoryresultscards.vue","./src/components/dashboard.vue","./src/components/resultstable.vue","./src/components/settings.vue"],"version":"5.9.3"}

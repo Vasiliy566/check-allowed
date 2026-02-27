@@ -1,127 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Разрешаем загрузку картинок с любых HTTPS для проверки доступности (на GitHub Pages без этого проверка может не работать) -->
-  <meta http-equiv="Content-Security-Policy" content="img-src 'self' https: data:;">
-  <title>Диагностика доступности сайтов</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Диагностика доступности</h1>
-      <p class="subtitle">Проверка доступности доменов с вашего устройства (без обхода блокировок)</p>
-    </header>
-
-    <!-- Источник доменов -->
-    <section class="panel source-panel">
-      <h2>Источник списка доменов</h2>
-      <div class="row">
-        <label for="domain-source">Список:</label>
-        <select id="domain-source">
-          <option value="russia-inside">Russia inside RAW</option>
-          <option value="russia-outside">Russia outside RAW</option>
-          <option value="discord">Services: Discord</option>
-          <option value="youtube">Services: YouTube</option>
-          <option value="meta">Services: Meta</option>
-          <option value="telegram">Services: Telegram</option>
-          <option value="tiktok">Services: Tik-Tok</option>
-          <option value="twitter">Services: Twitter</option>
-          <option value="hdrezka">Services: HDRezka</option>
-        </select>
-      </div>
-      <div class="row">
-        <label for="domain-limit">Проверить доменов:</label>
-        <select id="domain-limit">
-          <option value="50">50</option>
-          <option value="120" selected>120</option>
-          <option value="300">300 (долго, много запросов)</option>
-        </select>
-        <span class="hint" id="limit-warning"></span>
-      </div>
-      <div class="row">
-        <label for="health-threshold">Порог здоровья (% OK):</label>
-        <select id="health-threshold">
-          <option value="70">70%</option>
-          <option value="85" selected>85%</option>
-          <option value="95">95%</option>
-        </select>
-      </div>
-    </section>
-
-    <!-- Статус и метрики -->
-    <section class="panel status-panel">
-      <div class="status-badge" id="status-badge" aria-live="polite">
-        <span class="badge-icon">—</span>
-        <span class="badge-text">Запустите проверку</span>
-      </div>
-      <div class="status-detail" id="status-detail"></div>
-      <div class="metrics" id="metrics">
-        <span>Проверено: <strong id="metric-total">0</strong></span>
-        <span>OK: <strong id="metric-ok" class="ok">0</strong></span>
-        <span>FAIL: <strong id="metric-fail" class="fail">0</strong></span>
-        <span>TIMEOUT: <strong id="metric-timeout" class="timeout">0</strong></span>
-        <span>Время: <strong id="metric-duration">—</strong></span>
-      </div>
-      <div class="progress-wrap" id="progress-wrap" hidden>
-        <progress id="progress" value="0" max="100">0%</progress>
-        <span class="progress-label" id="progress-label">0 / 0</span>
-      </div>
-    </section>
-
-    <!-- Кнопки -->
-    <section class="panel actions-panel">
-      <button type="button" id="btn-run" class="btn btn-primary">Запустить проверку</button>
-      <button type="button" id="btn-stop" class="btn btn-secondary" disabled>Остановить</button>
-      <button type="button" id="btn-retry-failed" class="btn btn-secondary" disabled>Повторить только упавшие</button>
-      <button type="button" id="btn-export" class="btn btn-outline" disabled>Export JSON</button>
-    </section>
-
-    <!-- Таблица результатов -->
-    <section class="panel table-panel">
-      <h2>Результаты</h2>
-      <div class="table-controls">
-        <input type="text" id="table-search" placeholder="Поиск по домену..." autocomplete="off">
-        <div class="filter-btns">
-          <button type="button" class="filter-btn active" data-filter="all">Все</button>
-          <button type="button" class="filter-btn" data-filter="ok">OK</button>
-          <button type="button" class="filter-btn" data-filter="fail">FAIL</button>
-          <button type="button" class="filter-btn" data-filter="timeout">TIMEOUT</button>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table class="results-table">
-          <thead>
-            <tr>
-              <th>Домен</th>
-              <th>Статус</th>
-              <th>Probe</th>
-              <th>Задержка (ms)</th>
-              <th>Время проверки</th>
-              <th class="rkn-col" id="rkn-col-header">RKN</th>
-            </tr>
-          </thead>
-          <tbody id="results-tbody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- RKN опционально -->
-    <section class="panel rkn-panel">
-      <h2>Статус по реестру РКН (опционально)</h2>
-      <p class="rkn-desc">
-        Колонка «RKN» заполняется из локального снапшота <code>data/rkn_snapshot.json</code>, если файл есть в репозитории.
-        Официальный дамп реестра РКН для операторов получается через портал выгрузок; на GitHub Pages полная проверка невозможна.
-      </p>
-      <p id="rkn-status" class="rkn-status"></p>
-    </section>
-
-    <footer>
-      <p>Домены: <a href="https://github.com/itdoginfo/allow-domains" target="_blank" rel="noopener">allow-domains</a>. Только диагностика, без обхода блокировок.</p>
-    </footer>
-  </div>
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Диагностика доступности сайтов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
