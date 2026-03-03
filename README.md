@@ -1,6 +1,9 @@
 # Диагностика доступности сайтов
 
-Фронтенд-приложение на Vue 3 (Vite + TypeScript) для проверки доступности доменов с текущего устройства. Полезно в условиях, когда часть ресурсов может быть заблокирована или недоступна (например, в РФ). **Приложение только для диагностики, не для обхода блокировок.**
+Фронтенд-приложение для проверки доступности доменов с текущего устройства. Полезно в условиях, когда часть ресурсов может быть заблокирована или недоступна. **Приложение только для диагностики, не для обхода блокировок.**
+
+https://vasiliy566.github.io/check-allowed/
+
 
 ## Возможности
 
@@ -10,105 +13,6 @@
 - Контрольные проверки: wikipedia.org (с favicon), raw.githubusercontent.com
 - Пул параллельных проверок (concurrency 10–20), Stop и прогресс
 - Опционально: колонка RKN по снапшоту `rkn_snapshot.json`
-
-## Требования
-
-- Node.js 18+
-- npm или pnpm
-
-## Локальный запуск
-
-```bash
-npm i
-npm run dev
-```
-
-Откройте в браузере адрес из вывода (обычно http://localhost:5173).
-
-## Сборка
-
-```bash
-npm run build
-```
-
-Артефакты в каталоге `dist/` (статичные файлы).
-
-## Деплой на static hosting
-
-Собранное приложение — обычный SPA. Раздавайте содержимое `dist/` как статику.
-
-- **Nginx:** укажите `root` на каталог с `dist/`, для SPA добавьте `try_files $uri $uri/ /index.html;` для `location /`.
-- **Vercel / Netlify:** подключите репозиторий, в настройках сборки укажите `npm run build`, корень публикации — `dist` (или по документации сервиса).
-- **Любой хостинг с Node:** можно поднять `vite preview` (или раздавать `dist` через express/nginx).
-
-Приложение не требует серверного API и работает полностью в браузере.
-
-### GitHub Pages
-
-Да, приложение можно развернуть на GitHub Pages. В конфиге Vite задано `base: './'`, поэтому оно корректно работает и с корня домена, и из подпапки (например, `https://username.github.io/check_sites/`).
-
-**Вариант 1: публикация из ветки (например, `gh-pages`)**
-
-1. Соберите проект: `npm run build`.
-2. В настройках репозитория: **Settings → Pages → Build and deployment → Source** выберите **Deploy from a branch**.
-3. В ветке для публикации (например, `gh-pages`) в корне должны лежать файлы из каталога `dist/` (то есть `index.html`, папка `assets/`, при необходимости `default_domains.txt`, `rkn_snapshot.json` и т.д.).
-4. Укажите эту ветку и папку `/ (root)` (или каталог, куда вы положили содержимое `dist/`), сохраните. Через некоторое время сайт будет доступен по адресу вида `https://<username>.github.io/<repo>/` (или по корню, если репозиторий называется `<username>.github.io`).
-
-**Вариант 2: GitHub Actions (рекомендуется)**
-
-**Важно:** в **Settings → Pages → Source** обязательно выберите **GitHub Actions**, а не «Deploy from a branch». Если оставить публикацию из ветки, браузер будет запрашивать `/src/main.ts` (исходник) и получит 404 — сайт не заработает.
-
-1. В корне репозитория создайте каталог `.github/workflows`.
-2. Добавьте файл `.github/workflows/deploy-pages.yml`:
-
-```yaml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - run: npx vite build --base=/${{ github.event.repository.name }}/
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - id: deploy
-        uses: actions/deploy-pages@v4
-```
-
-3. В настройках репозитория: **Settings → Pages → Build and deployment → Source** выберите **GitHub Actions**.
-4. При каждом пуше в ветку `main` будет выполняться сборка и деплой; сайт появится по адресу `https://<username>.github.io/<repo>/`.
-
-Файлы из `public/` (в том числе `default_domains.txt`, `rkn_snapshot.json`) при сборке копируются в `dist/` и будут доступны на GitHub Pages.
-
-**Если страница пустая и в F12 видно, что загружается `main.ts` (исходный код):** значит GitHub отдаёт исходники из ветки, а не собранный сайт. Зайдите в репозитории в **Settings → Pages**. В блоке **Build and deployment** в поле **Source** выберите **GitHub Actions** (не «Deploy from a branch»). Сохраните. Дождитесь завершения workflow вкладки **Actions** и обновите страницу сайта (лучше с очисткой кэша: Ctrl+Shift+R). После этого должен отдаваться артефакт сборки (в Network будет запрос к файлу вида `assets/index-….js`, а не к `main.ts`).
 
 ## Источники доменов
 
